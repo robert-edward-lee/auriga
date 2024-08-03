@@ -22,7 +22,7 @@ bool is_unique(const char *s) {
 
 struct {
     const char *str;
-    bool unique;
+    bool flag;
 } tests[] = {
     { NULL, false },
     { "", true },
@@ -34,8 +34,8 @@ int main(void) {
     int i;
 
     for(i = 0; i < countof(tests); ++i) {
-        if(is_unique(tests[i].str) != tests[i].unique) {
-            printf("wrong: is_unique(\"%s\") != %s\n", tests[i].str, tests[i].unique ? "true" : "false");
+        if(is_unique(tests[i].str) != tests[i].flag) {
+            printf("wrong: is_unique(\"%s\") != %s\n", tests[i].str, tests[i].flag ? "true" : "false");
         }
     }
 
