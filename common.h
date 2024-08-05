@@ -8,7 +8,7 @@
 
 #define do_test(func, test) \
     if(func(test.str) != test.flag) { \
-       printf("wrong: " #func "(\"%s\") != %s\n", test.str, test.flag ? "true" : "false"); \
+       printf("Error: " #func "(\"%s\") != %s\n", test.str, test.flag ? "true" : "false"); \
     }
 
 #define do_tests(func, tests) \

@@ -1,4 +1,7 @@
+#include <stdlib.h>
+
 #include "common.h"
+#include "stack.h"
 
 Test tests_simple[] = {
     { NULL, false },
@@ -24,8 +27,8 @@ Test tests[] = {
     { "{()[]((()))}{}", true },
     { "{()[]((())}{}", false },
     { "(}", false },
+    { "[[((]]))", false },
 };
-
 
 bool is_correct_simple(const char *s) {
     int cnt = 0;
@@ -55,42 +58,52 @@ bool is_correct_simple(const char *s) {
 }
 
 bool is_correct(const char *s) {
-    int rounds = 0, boxes = 0, curlies = 0;
+    Stack stack;
 
     if(!s) {
         return false;
     }
+    printf("\n%s:\n", s);
+
+    stack = Stack_new();
 
     while(*s) {
-        switch(*s++) {
+        switch(*s) {
             case '(':
-                ++rounds;
+            case '[':
+            case '{':
+                Stack_push(&stack, *s);
                 break;
             case ')':
-                --rounds;
-                break;
-            case '[':
-                ++boxes;
+                if(Stack_peek(&stack) != '(') {
+                    goto err;
+                }
+                Stack_pop(&stack);
                 break;
             case ']':
-                --boxes;
-                break;
-            case '{':
-                ++curlies;
+                if(Stack_peek(&stack) != '[') {
+                    goto err;
+                }
+                Stack_pop(&stack);
                 break;
             case '}':
-                --curlies;
+                if(Stack_peek(&stack) != '{') {
+                    goto err;
+                }
+                Stack_pop(&stack);
                 break;
             default:
                 return false;
         }
-
-        if(rounds < 0 || boxes < 0 || curlies < 0) {
-            return false;
-        }
+        Stack_print(&stack);
+        ++s;
     }
 
-    return !rounds && !boxes && !curlies;
+    printf("%s\n", stack.size ? "err" : "---");
+    return !stack.size;
+err:
+    printf("err\n");
+    return false;
 }
 
 int main(void) {
