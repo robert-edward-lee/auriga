@@ -28,6 +28,8 @@ Test tests[] = {
     { "{()[]((())}{}", false },
     { "(}", false },
     { "[[((]]))", false },
+    { "({[[{((([[[{{{{((({[{{[{{[{{[{{[((((({[{[{}]}]})))))]}}]}}]}}]}}]})))}}}}]]])))}]]})", true },
+    { "({[[{((([[[{{{{((({[{{[{{[{{[{{[((((({[{[{}]}]}))))]}}]}}]}}]}}]})))}}}}]]])))}]]})", false },
 };
 
 bool is_correct_simple(const char *s) {
@@ -63,7 +65,7 @@ bool is_correct(const char *s) {
     if(!s) {
         return false;
     }
-    printf("\n%s:\n", s);
+    pr_dbg("\n\"%s\":\n", s);
 
     stack = Stack_new();
 
@@ -95,14 +97,16 @@ bool is_correct(const char *s) {
             default:
                 return false;
         }
-        Stack_print(&stack);
         ++s;
+#if defined(DEBUG) && DEBUG
+        Stack_print(&stack);
+#endif
     }
 
-    printf("%s\n", stack.size ? "err" : "---");
+    pr_dbg("%s\n", stack.size ? "err" : "---");
     return !stack.size;
 err:
-    printf("err\n");
+    pr_dbg("err\n");
     return false;
 }
 

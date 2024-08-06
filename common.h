@@ -4,6 +4,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#if defined(DEBUG) && DEBUG
+#define pr_dbg(...) printf(__VA_ARGS__)
+#else
+#define pr_dbg(...)
+#endif
+
 #define countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #define do_test(func, test) \

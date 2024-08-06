@@ -31,6 +31,7 @@ bool Stack_push(Stack *stack, char parens) {
         if(!tmp) {
             return false;
         }
+        stack->cap *= 2;
         stack->data = tmp;
     }
 
@@ -57,6 +58,7 @@ void Stack_print(const Stack *stack) {
         return;
     }
 
+    printf("|- ");
     for(i = 0; i < stack->size; ++i) {
         printf("%c ", stack->data[i]);
     }
