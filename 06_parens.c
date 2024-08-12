@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 #include "common.h"
+
+#define STACK_TYPE char
 #include "stack.h"
 
 Test tests_simple[] = {
@@ -31,6 +33,11 @@ Test tests[] = {
     { "({[[{((([[[{{{{((({[{{[{{[{{[{{[((((({[{[{}]}]})))))]}}]}}]}}]}}]})))}}}}]]])))}]]})", true },
     { "({[[{((([[[{{{{((({[{{[{{[{{[{{[((((({[{[{}]}]}))))]}}]}}]}}]}}]})))}}}}]]])))}]]})", false },
 };
+
+void print_char(char ch) {
+    fputc(ch, stdout);
+    fputc(' ', stdout);
+}
 
 bool is_correct_simple(const char *s) {
     int cnt = 0;
@@ -99,7 +106,7 @@ bool is_correct(const char *s) {
         }
         ++s;
 #if defined(DEBUG) && DEBUG
-        Stack_print(&stack);
+        Stack_print(&stack, print_char);
 #endif
     }
 

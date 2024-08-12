@@ -5,9 +5,9 @@
 #include "stack.h"
 
 Stack Stack_new(void) {
-    char *data;
+    stack_t *data;
 
-    data = malloc(STACK_INIT_CAP);
+    data = malloc(STACK_INIT_CAP * sizeof(stack_t));
     if(!data) {
         return (Stack){ NULL, -1, -1 };
     }
@@ -19,8 +19,8 @@ void Stack_del(Stack *stack) {
         free(stack->data);
     }
 }
-bool Stack_push(Stack *stack, char parens) {
-    char *tmp;
+bool Stack_push(Stack *stack, stack_t item) {
+    stack_t *tmp;
 
     if(!stack || !stack->data) {
         return false;
@@ -35,23 +35,23 @@ bool Stack_push(Stack *stack, char parens) {
         stack->data = tmp;
     }
 
-    stack->data[stack->size++] = parens;
+    stack->data[stack->size++] = item;
     return true;
 }
-char Stack_pop(Stack *stack) {
+stack_t Stack_pop(Stack *stack) {
     if(!stack || !stack->data || !stack->size) {
-        return '\0';
+        return (stack_t){ 0 };
     }
 
     return stack->data[stack->size--];
 }
-char Stack_peek(const Stack *stack) {
+stack_t Stack_peek(const Stack *stack) {
     if(!stack || !stack->data || !stack->size) {
         return '\0';
     }
     return stack->data[stack->size - 1];
 }
-void Stack_print(const Stack *stack) {
+void Stack_print(const Stack *stack, print_f fn) {
     int i;
 
     if(!stack || !stack->data || !stack->size) {
@@ -60,7 +60,7 @@ void Stack_print(const Stack *stack) {
 
     printf("|- ");
     for(i = 0; i < stack->size; ++i) {
-        printf("%c ", stack->data[i]);
+        fn(stack->data[i]);
     }
     printf("\n");
 }

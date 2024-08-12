@@ -30,8 +30,6 @@ bool is_palindrome(const char *s) {
     return true;
 }
 
-
-
 int main(void) {
     do_tests(is_palindrome, tests);
 
