@@ -15,6 +15,8 @@ char *strings[] = {
     "lol",
     "kek",
     "cheburek",
+    "cheburek",
+    "cheburek",
 };
 
 void pr_s(const char *str, size_t size) {
@@ -36,8 +38,12 @@ int main(void) {
     for(i = 0; i < countof(strings); ++i) {
         printf("strings[%zu] = \"%s\"\n", i, strings[i]);
 
-        if(!htable_insert(ht, strings[i], strlen(strings[i]) + 1)) {
-            printf("!htable_insert\n");
+        if(!htable_has(ht, strings[i], strlen(strings[i]) + 1)) {
+            if(!htable_insert(ht, strings[i], strlen(strings[i]) + 1)) {
+                printf("!htable_insert\n");
+            }
+        } else {
+            printf("\"%s\" already exists\n", strings[i]);
         }
     }
 
