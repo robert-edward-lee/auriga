@@ -3,12 +3,12 @@
 #include "common.h"
 
 Test tests[] = {
-    { NULL, false },
-    { "", true },
-    { "abc", false },
-    { "aba", true },
-    { "abba", true },
-    { "abac", false },
+    {  NULL, false},
+    {    "",  true},
+    { "abc", false},
+    { "aba",  true},
+    {"abba",  true},
+    {"abac", false},
 };
 
 bool is_palindrome(const char *s) {

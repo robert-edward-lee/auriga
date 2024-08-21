@@ -9,10 +9,10 @@ Stack Stack_new(void) {
 
     data = malloc(STACK_INIT_CAP * sizeof(stack_t));
     if(!data) {
-        return (Stack){ NULL, -1, -1 };
+        return (Stack){NULL, -1, -1};
     }
 
-    return (Stack){ data, 0, STACK_INIT_CAP };
+    return (Stack){data, 0, STACK_INIT_CAP};
 }
 void Stack_del(Stack *stack) {
     if(stack) {
@@ -40,7 +40,7 @@ bool Stack_push(Stack *stack, stack_t item) {
 }
 stack_t Stack_pop(Stack *stack) {
     if(!stack || !stack->data || !stack->size) {
-        return (stack_t){ 0 };
+        return (stack_t){0};
     }
 
     return stack->data[stack->size--];

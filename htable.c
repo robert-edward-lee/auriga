@@ -1,19 +1,19 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "htable.h"
 
-/* https://algorithmica.org/ru/hashing */
-#define K 31
-static size_t hash(void *data, size_t size, size_t mod) {
+#define K 31 /* https://algorithmica.org/ru/hashing */
+static size_t hash(const void *data, size_t size, size_t mod) {
     size_t h = 0, m = 1;
-    char *it;
+    const char *it;
 
     if(!data || !size || !mod) {
         return 0;
     }
 
-    for(it = data; it < (char *)data + size; ++it) {
+    for(it = data; it < (const char *)data + size; ++it) {
         h = (h + m * (*it - 'a' + 1)) % mod;
         m = (m * K) % mod;
     }
@@ -25,7 +25,7 @@ htable_t *htable_new(size_t size) {
     htable_t *table;
 
     table = malloc(sizeof(*table));
-    if(table) {
+    if(!table) {
         return NULL;
     }
 
@@ -40,45 +40,94 @@ htable_t *htable_new(size_t size) {
 }
 
 void htable_del(htable_t *table) {
+    size_t i;
+    htable_node_t *node;
+
     if(table) {
         if(table->item) {
+            for(i = 0; i < table->size; ++i) {
+                for(node = table->item[i]; node; node = node->next) {
+                    free(node);
+                }
+            }
             free(table->item);
         }
         free(table);
     }
 }
 
-bool htable_insert(htable_t *table, htable_data_t *data, size_t size) {
+bool htable_insert(htable_t *table, const htable_data_t *data, size_t size) {
     size_t i;
     htable_node_t *node, *new_node;
-    htable_data_t *cont;
 
     if(!table || !data || !size) {
         return false;
     }
 
-    cont = malloc(size * sizeof(htable_data_t));
-    if(!cont) {
+
+    new_node = malloc(sizeof(*new_node));
+    if(!new_node) {
+        return false;
+    }
+    new_node->data = malloc(sizeof(*data) * size);
+    if(!new_node->data) {
+        free(new_node);
         return false;
     }
 
-    i = hash(data, size, table->size);
-    node = table->item[i];
+    memcpy(new_node->data, data, size);
+    new_node->size = size;
+    new_node->next = NULL;
 
+    i = hash(data, size, table->size);
+    if(!table->item[i]) {
+        table->item[i] = new_node;
+        return true;
+    }
+
+    node = table->item[i];
     if(node) { /* process collision */
         while(node->next) {
             node = node->next;
         }
     }
-
-    new_node = malloc(sizeof(*new_node));
-
-
-    memcpy(cont, data, size);
-    table->item[i]->data = cont;
-    table->item[i]->size = size;
+    node->next = new_node;
+    return true;
 }
 
-bool htable_find(htable_t *table, htable_data_t data, size_t size) {
+bool htable_has(htable_t *table, const htable_data_t *data, size_t size) {
+    htable_node_t *node;
 
+    if(!table || !data || !size) {
+        return false;
+    }
+
+    for(node = table->item[hash(data, size, table->size)]; node; node = node->next) {
+        if((node->size == size) && !memcmp(node->data, data, size)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void htable_print(const htable_t *table, void (*pr_fn)(const htable_data_t *, size_t)) {
+    size_t i;
+    htable_node_t *node;
+
+    if(!table) {
+        return;
+    }
+
+    for(i = 0; i < table->size; ++i) {
+        if(table->item[i]) {
+            printf("[%03zu]", i);
+            for(node = table->item[i]; node; node = node->next) {
+                printf(" - \"");
+                pr_fn(node->data, node->size);
+                printf("\"");
+            }
+            printf("\n");
+        }
+    }
 }

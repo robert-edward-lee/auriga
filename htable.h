@@ -25,7 +25,9 @@ typedef struct {
 htable_t *htable_new(size_t size);
 void htable_del(htable_t *table);
 
-bool htable_insert(htable_t *table, htable_data_t *data, size_t size);
-bool htable_find(htable_t *table, htable_data_t data, size_t size);
+bool htable_insert(htable_t *table, const htable_data_t *data, size_t size);
+bool htable_has(htable_t *table, const htable_data_t *data, size_t size);
+
+void htable_print(const htable_t *table, void (*)(const htable_data_t *, size_t));
 
 #endif /* H_HTABLE */

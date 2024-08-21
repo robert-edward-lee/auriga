@@ -82,29 +82,29 @@ bool mat_eq(int **lhs, int **rhs, size_t n, size_t m) {
 }
 
 int *m1[] = {
-    (int[3]){ 0, -5, 2 },
-    (int[3]){ 2, 5, 2 },
-    (int[3]){ 8, -1, 6 },
+    (int[3]){0, -5, 2},
+    (int[3]){2,  5, 2},
+    (int[3]){8, -1, 6},
 };
 
 int *m2[] = {
-    (int[3]){ 0, 0, 0 },
-    (int[3]){ 0, 5, 2 },
-    (int[3]){ 0, -1, 6 },
+    (int[3]){0,  0, 0},
+    (int[3]){0,  5, 2},
+    (int[3]){0, -1, 6},
 };
 
 int *m3[] = {
-    (int[3]){ 0, -5, 2 },
-    (int[3]){ 2, 5, 2 },
-    (int[3]){ 8, -1, 6 },
-    (int[3]){ 5, 2, 3 },
+    (int[3]){0, -5, 2},
+    (int[3]){2,  5, 2},
+    (int[3]){8, -1, 6},
+    (int[3]){5,  2, 3},
 };
 
 int *m4[] = {
-    (int[3]){ 0, 0, 0 },
-    (int[3]){ 0, 5, 2 },
-    (int[3]){ 0, -1, 6 },
-    (int[3]){ 0, 2, 3 },
+    (int[3]){0,  0, 0},
+    (int[3]){0,  5, 2},
+    (int[3]){0, -1, 6},
+    (int[3]){0,  2, 3},
 };
 
 int main(void) {
@@ -130,7 +130,7 @@ int main(void) {
     printf("mat_eq(m3, m3) = %d\n", mat_eq(m3, m3, 3, 4));
     printf("mat_eq(m3, m4) = %d\n", mat_eq(m3, m4, 3, 4));
 
-    mat_zeroed(m3, 3, 4);\
+    mat_zeroed(m3, 3, 4);
     printf("zeroed(m3) = \n");
     mat_print(m3, 3, 4);
     printf("mat_eq(zeroed(m3), m4) = %d\n", mat_eq(m3, m4, 3, 4));

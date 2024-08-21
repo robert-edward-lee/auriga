@@ -1,14 +1,14 @@
 #include "common.h"
 
 Test tests[] = {
-    { NULL, false },
-    { "", true },
-    { "abc", true },
-    { "aba", false },
+    { NULL, false},
+    {   "",  true},
+    {"abc",  true},
+    {"aba", false},
 };
 
 bool is_unique(const char *s) {
-    bool hist[256] = { false };
+    bool hist[256] = {false};
 
     if(!s) {
         return false;
